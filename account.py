@@ -18,22 +18,22 @@ def register():
         company_name = data.get('company_name')
         location = data.get('location')
 
-        # Walidacja danych
+        # Data validation
         if not email or not password or not role:
             return jsonify({"message": "Missing required fields"}), 400
 
-        # Szyfrowanie hasła
+        # Password encryption
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-        # Utwórz użytkownika
+        # Create user
         new_user = User(email=email, password=hashed_password, role=role)
         db.session.add(new_user)
         db.session.commit()
 
-        # Pobierz user_id nowego użytkownika
+        # Get the user_id of the new user
         user_id = new_user.user_id
 
-        # Jeśli użytkownik jest usługodawcą, dodaj go do tabeli providers
+        # If the user is a provider, add them to the providers table
         if role == 'provider':
             if not company_name or not location:
                 return jsonify({"message": "Missing provider-specific fields"}), 400
@@ -41,7 +41,7 @@ def register():
             new_provider = Provider(
                 user_id=user_id,
                 company_name=company_name,
-                location=','.join(location)  # Zakładamy, że location to lista
+                location=','.join(location)
             )
             db.session.add(new_provider)
 
@@ -66,12 +66,12 @@ def login():
         if not email or not password:
             return jsonify({"message": "Missing required fields"}), 400
 
-        # Pobierz użytkownika z bazy danych
+        # Retrieve the user from the database
         user = User.query.filter_by(email=email).first()
         if not user or not bcrypt.check_password_hash(user.password, password):
             return jsonify({"message": "Invalid credentials"}), 401
 
-        # Generowanie tokenu JWT
+        # Generate a JWT token
         access_token = create_access_token(identity={
             "id": user.user_id,
             "role": user.role,
