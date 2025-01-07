@@ -36,7 +36,7 @@ def make_reservation():
     if not availability or availability.daily_limit <= 0:
         return jsonify({"message": "No availability"}), 400
 
-    # Tworzenie rezerwacji
+    # Create a new reservation
     reservation = Reservation(
         service_id=service_id,
         provider_id=provider_id,
@@ -46,10 +46,10 @@ def make_reservation():
     )
     db.session.add(reservation)
 
-    # Zmniejsz limit dzienny
+    # Decrease the daily limit
     availability.daily_limit -= 1
 
-    # Oznacz datę jako zajętą, jeśli daily_limit wynosi 0
+    # Mark the date as fully booked if daily_limit reaches 0
     if availability.daily_limit == 0:
         availability.status = 'booked'
 
@@ -182,8 +182,8 @@ def update_reservation_status(reservation_id):
 @jwt_required()
 def add_review(reservation_id):
     """
-    Dodaj opinię dla zakończonej rezerwacji.
-    Każdy użytkownik może dodać tylko jedną opinię do jednej rezerwacji.
+    Add a review for a completed reservation.
+    Each user can add only one review per reservation.
     """
     current_user = get_jwt_identity()
 
@@ -197,22 +197,22 @@ def add_review(reservation_id):
     if not rating:
         return jsonify({"message": "Rating is required"}), 400
 
-    # Znajdź rezerwację
+    # Find the reservation
     reservation = Reservation.query.filter_by(reservation_id=reservation_id).first()
     if not reservation or reservation.status != 'completed':
         return jsonify({"message": "Reservation not found or not completed"}), 404
 
-    # Znajdź klienta
+    # Find the client
     client = Client.query.filter_by(user_id=current_user['id']).first()
     if not client or reservation.client_id != client.client_id:
         return jsonify({"message": "Access forbidden"}), 403
 
-    # Sprawdź, czy opinia już istnieje
+    # Check if the review already exists
     existing_review = Review.query.filter_by(reservation_id=reservation_id, client_id=client.client_id).first()
     if existing_review:
         return jsonify({"message": "You have already reviewed this reservation"}), 400
 
-    # Tworzenie nowej opinii
+    # Create a new review
     review = Review(
         reservation_id=reservation_id,
         provider_id=reservation.provider_id,
