@@ -80,11 +80,11 @@ def delete_availability(availability_id):
 def get_available_dates():
     current_user = get_jwt_identity()
 
-    # Pobierz parametry zapytania
+    # Retrieve query parameters
     service_id = request.args.get('service_id')
     provider_id = request.args.get('provider_id')
 
-    # Budowanie zapytania
+    # Build the query
     query = Availability.query
 
     if current_user['role'] == 'client':
