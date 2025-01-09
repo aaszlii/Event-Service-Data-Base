@@ -75,16 +75,18 @@ def delete_availability(availability_id):
     db.session.commit()
     return jsonify({"message": "Availability deleted successfully!"}), 200
 
-@availability_blueprint.route('/availability', methods=['GET'])
+@availability_blueprint.route('', methods=['GET'])
 @jwt_required()
 def get_available_dates():
     current_user = get_jwt_identity()
+    print(f"User: {current_user}")
 
-    # Retrieve query parameters
+    # Pobierz parametry zapytania
     service_id = request.args.get('service_id')
     provider_id = request.args.get('provider_id')
+    print(f"Service ID: {service_id}, Provider ID: {provider_id}")
 
-    # Build the query
+    # Budowanie zapytania
     query = Availability.query
 
     if current_user['role'] == 'client':
@@ -96,6 +98,8 @@ def get_available_dates():
         query = query.filter_by(provider_id=provider_id)
 
     available_dates = query.all()
+
+    print(f"Available dates: {available_dates}")
 
     return jsonify([
         {
