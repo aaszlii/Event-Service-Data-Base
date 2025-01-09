@@ -1,0 +1,626 @@
+{
+	"info": {
+		"_postman_id": "3ccf7f62-30c8-4514-ab9e-7e49925a236e",
+		"name": "DB test - availability",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40619838"
+	},
+	"item": [
+		{
+			"name": "Add Availability",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"pm.test(\"Response has success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Availability added successfully!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkzMDg2MywianRpIjoiNDRhOTRlZjItYzJjMS00ODBmLWE3NDctZWNiNThhNTE2YWQyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MjAsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E3QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTkzMDg2MywiY3NyZiI6IjJjNjNkNjU4LTViM2ItNGY0NC1iYzBiLTBkZGRhMTY5MjFlOSIsImV4cCI6MTczNTkzMTc2M30.drGMTkCKrO4YQWNpX5RAC5nlvbdgXSjKlQN-YCSWJ_4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"service_id\": 4,\r\n  \"available_date\": \"2025-01-12\",\r\n  \"daily_limit\": 2\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Availability Missing Required Fields",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Response contains error message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Missing required fields\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkzMjM4NSwianRpIjoiM2QwYzU2MTctMmM1My00ZDI5LWE3NWItZjg1NDdkZThhOTIzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MjAsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E3QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTkzMjM4NSwiY3NyZiI6IjZjZTRiZDM0LWFmMjEtNDM5Yi1iOGRlLTJmMTE2NWI0NGQyNyIsImV4cCI6MTczNTkzMzI4NX0.Sw6PviN7f7U_oSXLQIxCgLDnlSaIPgIxQzvcxQdtw8c",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"available_date\": \"2025-01-10\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Availability by client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"pm.test(\"Response contains forbidden message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Access forbidden\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkzMjcwNCwianRpIjoiNWI5YmFhNDctMDg4OC00MzJiLWFkMTgtYzdiOGVhM2RhNDU5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTIsInJvbGUiOiJjbGllbnQiLCJlbWFpbCI6ImNsaWVudDEyQGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTkzMjcwNCwiY3NyZiI6ImJhYTA2NTczLWU1YzktNDY2YS04YTQ0LTc2NTNiYTBkODZiZSIsImV4cCI6MTczNTkzMzYwNH0.y1jFiOYeXRJgDJthNy-o8pGCqgVwqJF6Fu2bk0mMn_U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"service_id\": 4,\r\n  \"available_date\": \"2025-01-12\",\r\n  \"daily_limit\": 2\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Availability",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Availability updated successfully!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkzMTE5NiwianRpIjoiYTJmM2NlOTYtYTAyZS00NjNkLTlkOTUtYmQyNWRkNjNjNjI4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MjAsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E3QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTkzMTE5NiwiY3NyZiI6Ijc4MmFlNzZkLWIwOGItNDA3Mi1iOGY2LWZmZGUwYzYwNGU3NiIsImV4cCI6MTczNTkzMjA5Nn0.7YYkzsHTuN_Jjg_Nx26acOf_5rBph1iAeabMqAJClyo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"daily_limit\": 2\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Availability no auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Response contains missing token message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg).to.eql(\"Missing Authorization Header\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Availability",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Availability deleted successfully!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkzMTUzMywianRpIjoiY2M0NzM0MjYtMzZjYy00NTcwLWI5MTUtYWYwOWMxNWM4MTU0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MjAsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E3QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTkzMTUzMywiY3NyZiI6ImYxZGI1MWE1LTNhMWItNDA1Ny04Njc2LTYzMzkyODc3MDczMiIsImV4cCI6MTczNTkzMjQzM30.oqWuBxE25YaPF91FLM8WXgzJ5FqYfbYnPBA9KMMwQCY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Availability not exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Access forbidden or availability not found\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjM1NDU2MSwianRpIjoiYWY5ZDVjYjctMGQyYi00MzJkLTgyM2UtMGMxM2FlMWE5MWM1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MjAsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E3QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjM1NDU2MSwiY3NyZiI6ImEzNTRmNzRlLTViYjEtNGEzOS1iZmM5LWZiNzcyYTU1OWY0MiIsImV4cCI6MTczNjM1NTQ2MX0.lOkhQBzanUbxvr3j25NmXvhEHhHP-AlvVE7vwpwPxl4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability/999",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability",
+						"999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Availability Missing Authorization Header",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Response contains missing token message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg).to.eql(\"Missing Authorization Header\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability/999",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability",
+						"999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Availabilities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response contains an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"});\r",
+							"pm.test(\"Each availability has required fields\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    jsonData.forEach(function(availability) {\r",
+							"        pm.expect(availability).to.have.property(\"availability_id\");\r",
+							"        pm.expect(availability).to.have.property(\"available_date\");\r",
+							"        pm.expect(availability).to.have.property(\"daily_limit\");\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkzMTUzMywianRpIjoiY2M0NzM0MjYtMzZjYy00NTcwLWI5MTUtYWYwOWMxNWM4MTU0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MjAsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E3QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTkzMTUzMywiY3NyZiI6ImYxZGI1MWE1LTNhMWItNDA1Ny04Njc2LTYzMzkyODc3MDczMiIsImV4cCI6MTczNTkzMjQzM30.oqWuBxE25YaPF91FLM8WXgzJ5FqYfbYnPBA9KMMwQCY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability?service_id=4",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability"
+					],
+					"query": [
+						{
+							"key": "service_id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Availabilities Provider",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Response contains missing service_id message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Missing service_id\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjM1NTgyOSwianRpIjoiYzI4MjExMDEtODk3YS00OTAwLTlkODAtODE1Y2Q1MjcwMGEwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTIsInJvbGUiOiJjbGllbnQiLCJlbWFpbCI6ImNsaWVudDEyQGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjM1NTgyOSwiY3NyZiI6IjZjYzliYTUwLTAyOTEtNDBkMy1hOGY4LWUzYzIxZGI5NjVmZiIsImV4cCI6MTczNjM1NjcyOX0.2astrSyfoVYjqzkCulU1szfP7pZfr8J7pLI8fbKAsbQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability?provider_id=11",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability"
+					],
+					"query": [
+						{
+							"key": "provider_id",
+							"value": "11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Availabilities Missing Authorization Header",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"pm.test(\"Response contains missing token message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg).to.eql(\"Missing Authorization Header\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/availability?service_id=4",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"availability"
+					],
+					"query": [
+						{
+							"key": "service_id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

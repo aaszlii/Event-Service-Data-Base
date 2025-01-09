@@ -1,0 +1,1301 @@
+{
+	"info": {
+		"_postman_id": "15356ab4-1ef3-4fbe-976a-bfafee564121",
+		"name": "DB test - services",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40619838"
+	},
+	"item": [
+		{
+			"name": "Assign specializations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Specializations assigned successfully\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({\r",
+							"    key: \"Authorization\",\r",
+							"    value: `Bearer ${pm.environment.get(\"token\")}`\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"specializations\": [3]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/assign-specializations",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"assign-specializations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assign specializations no auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is 'Missing Authorization Header'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg).to.eql(\"Missing Authorization Header\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"specjalizacje\": [1, 2, 3]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/assign-specializations",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"assign-specializations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assign specializations empty",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is 'Specializations must be a non-empty list'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"No specializations provided\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({\r",
+							"    key: \"Authorization\",\r",
+							"    value: `Bearer ${pm.environment.get(\"token\")}`\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/assign-specializations",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"assign-specializations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Service added successfully\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({\r",
+							"    key: \"Authorization\",\r",
+							"    value: `Bearer ${pm.environment.get(\"token\")}`\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"service_name\": \"Słodki stół\",\r\n    \"price\": 1000,\r\n    \"description\": \"Profesjonalne przygotowanie deserów\",\r\n    \"specialization_id\": 3\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/add-service",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"add-service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add service no auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is 'Missing Authorization Header'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg).to.eql(\"Missing Authorization Header\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"specjalizacja_id\": 1,\r\n    \"nazwa\": \"Fotografia Ślubna\",\r\n    \"opis\": \"Profesjonalne zdjęcia ślubne\",\r\n    \"cena\": 2500.00\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/add-service",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"add-service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add service without data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is 'Missing required fields'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Missing required fields\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({\r",
+							"    key: \"Authorization\",\r",
+							"    value: `Bearer ${pm.environment.get(\"token\")}`\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uslugodawca_id\": 2,\r\n    \"cena\": 100.00\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/add-service",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"add-service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"Service updated successfully!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTg2MTc4OSwianRpIjoiYmRmZDk2ZDQtMjQ3OC00OTk4LTllZWMtMGM0NmRlMjYwMmMwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTYsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E2QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTg2MTc4OSwiY3NyZiI6IjZjMGVmMjc4LTJhYWUtNGQyZC1iNGNmLTM2ZjQ4ZDI4YjBhNCIsImV4cCI6MTczNTg2MjY4OX0.mlXYsH8qwr7S_ZpHkxS38miJNriUVbLXQQQFnWFA-HY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Updated Service Name\",\r\n    \"description\": \"Updated service description.\",\r\n    \"price\": 200\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/5",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit service by client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains error message\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Access forbidden\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Nowa usługa\",\r\n    \"description\": \"Nowy opis usługi\",\r\n    \"price\": 1500\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/6",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Service deleted successfully!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTg2MTc4OSwianRpIjoiYmRmZDk2ZDQtMjQ3OC00OTk4LTllZWMtMGM0NmRlMjYwMmMwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTYsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E2QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTg2MTc4OSwiY3NyZiI6IjZjMGVmMjc4LTJhYWUtNGQyZC1iNGNmLTM2ZjQ4ZDI4YjBhNCIsImV4cCI6MTczNTg2MjY4OX0.mlXYsH8qwr7S_ZpHkxS38miJNriUVbLXQQQFnWFA-HY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/6",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete service by client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Access forbidden\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.request.headers.add({\r",
+							"    key: \"Authorization\",\r",
+							"    value: `Bearer ${pm.environment.get(\"token\")}`\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTg1NTIzNiwianRpIjoiNmM0OTllMmMtZjI4Ny00NzU2LWJiZWMtYzIyZTFhZjYzN2M4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTIsInJvbGUiOiJjbGllbnQiLCJlbWFpbCI6ImNsaWVudDEyQGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTg1NTIzNiwiY3NyZiI6IjgzNGRiM2Y5LTNkNjktNDE5Mi1iMWM3LTFlY2MzN2YzMzU5MCIsImV4cCI6MTczNTg1NjEzNn0.UtITVHLbDhEAkxxf6m1xY-D9-5bKpoqWl6bb39XqXAc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/6",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete not exist service",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains error message\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Service not found\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTg2MTc4OSwianRpIjoiYmRmZDk2ZDQtMjQ3OC00OTk4LTllZWMtMGM0NmRlMjYwMmMwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTYsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E2QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTg2MTc4OSwiY3NyZiI6IjZjMGVmMjc4LTJhYWUtNGQyZC1iNGNmLTM2ZjQ4ZDI4YjBhNCIsImV4cCI6MTczNTg2MjY4OX0.mlXYsH8qwr7S_ZpHkxS38miJNriUVbLXQQQFnWFA-HY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Providers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response is an array\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Each provider has necessary fields\", function () {\r",
+							"    pm.response.json().forEach(function (provider) {\r",
+							"        pm.expect(provider).to.have.property(\"id\");\r",
+							"        pm.expect(provider).to.have.property(\"location\");\r",
+							"        pm.expect(provider).to.have.property(\"specializations\");\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/providers",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"providers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Providers specialization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test: Status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test: Response contains providers with the specialization 'Muzyka'\r",
+							"pm.test(\"Response contains providers with specialization 'Muzyka'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"\r",
+							"    jsonData.forEach(provider => {\r",
+							"        pm.expect(provider).to.have.property(\"specializations\").that.is.an(\"array\");\r",
+							"        pm.expect(provider.specializations).to.include(\"Muzyka\");\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/providers?specialization=Muzyka",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"providers"
+					],
+					"query": [
+						{
+							"key": "specialization",
+							"value": "Muzyka"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Providers Location",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test: Status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test: Response contains providers located in 'mazowieckie'\r",
+							"pm.test(\"Response contains providers located in 'mazowieckie'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"\r",
+							"    jsonData.forEach(provider => {\r",
+							"        pm.expect(provider).to.have.property(\"location\");\r",
+							"        const locations = provider.location.split(\",\"); \r",
+							"        pm.expect(locations).to.include(\"mazowieckie\"); \r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/providers?location=mazowieckie",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"providers"
+					],
+					"query": [
+						{
+							"key": "location",
+							"value": "mazowieckie"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Providers both",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test: Status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test: Response contains array of providers\r",
+							"pm.test(\"Response contains an array of providers\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"// Test: Providers match the specialization filter\r",
+							"if (pm.request.url.query.has(\"specialization\")) {\r",
+							"    const specializationFilter = pm.request.url.query.get(\"specialization\");\r",
+							"    pm.test(`All providers have the specialization '${specializationFilter}'`, function () {\r",
+							"        const jsonData = pm.response.json();\r",
+							"        jsonData.forEach(provider => {\r",
+							"            pm.expect(provider).to.have.property(\"specializations\");\r",
+							"            pm.expect(provider.specializations).to.include(specializationFilter);\r",
+							"        });\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"// Test: Providers match the location filter\r",
+							"if (pm.request.url.query.has(\"location\")) {\r",
+							"    const locationFilter = pm.request.url.query.get(\"location\");\r",
+							"    pm.test(`All providers are located in '${locationFilter}'`, function () {\r",
+							"        const jsonData = pm.response.json();\r",
+							"        jsonData.forEach(provider => {\r",
+							"            pm.expect(provider).to.have.property(\"location\");\r",
+							"            pm.expect(provider.location).to.include(locationFilter);\r",
+							"        });\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/providers?location=mazowieckie&specialization=Muzyka",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"providers"
+					],
+					"query": [
+						{
+							"key": "location",
+							"value": "mazowieckie"
+						},
+						{
+							"key": "specialization",
+							"value": "Muzyka"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Provider info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test: Status code is 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test: Response contains provider details\r",
+							"pm.test(\"Response contains provider details\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"\r",
+							"    // Check for main provider details\r",
+							"    pm.expect(jsonData).to.have.property(\"provider_id\");\r",
+							"    pm.expect(jsonData).to.have.property(\"company_name\");\r",
+							"    pm.expect(jsonData).to.have.property(\"location\");\r",
+							"\r",
+							"    // Check for specializations\r",
+							"    pm.expect(jsonData).to.have.property(\"specializations\").that.is.an(\"array\");\r",
+							"    pm.expect(jsonData.specializations.length).to.be.above(0);\r",
+							"\r",
+							"    // Check for services\r",
+							"    pm.expect(jsonData).to.have.property(\"services\").that.is.an(\"array\");\r",
+							"    jsonData.services.forEach(service => {\r",
+							"        pm.expect(service).to.have.property(\"service_id\");\r",
+							"        pm.expect(service).to.have.property(\"name\");\r",
+							"        pm.expect(service).to.have.property(\"description\");\r",
+							"        pm.expect(service).to.have.property(\"price\");\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/providers/7",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"providers",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Provider info not exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is 'Provider not found'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Provider not found\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/providers/999",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"providers",
+						"999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get reviews",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains average_rating, total_reviews, and reviews\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"average_rating\");\r",
+							"    pm.expect(jsonData).to.have.property(\"total_reviews\");\r",
+							"    pm.expect(jsonData).to.have.property(\"reviews\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Reviews are returned as an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.reviews).to.be.an(\"array\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjExODk5NSwianRpIjoiYTViYmJjOGMtZDgwYS00YjVlLTgzZWQtNGU4ZjAzMmMxY2Y2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTIsInJvbGUiOiJjbGllbnQiLCJlbWFpbCI6ImNsaWVudDEyQGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjExODk5NSwiY3NyZiI6ImFhZDYwOTA3LTAxNDMtNGEwMi1hZTllLTdlN2ZkZDE4MWVjNSIsImV4cCI6MTczNjExOTg5NX0.SIVcasq2FwqMZBp4lrtCTa7Y4ulLSE5eNSWVWxVEd1s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/6/reviews",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"6",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get reviews null",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains average_rating, total_reviews, and reviews\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"average_rating\");\r",
+							"    pm.expect(jsonData).to.have.property(\"total_reviews\");\r",
+							"    pm.expect(jsonData).to.have.property(\"reviews\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Reviews are returned as an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.reviews).to.be.an(\"array\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjEyMDA4NiwianRpIjoiOGFjZDZkMTgtNGI1YS00NjZmLWIzYzUtMjBlYzQ4YjhhZDM2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTIsInJvbGUiOiJjbGllbnQiLCJlbWFpbCI6ImNsaWVudDEyQGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjEyMDA4NiwiY3NyZiI6ImJlYzY4YmQ2LWQyNzYtNDQ5Yy1hYjg3LTQ1MDI4NThhOWM1NyIsImV4cCI6MTczNjEyMDk4Nn0.WJkyDkGvvZvGSNjGmyKRtdI_lAhOPEgmzb79IFShFYI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/5/reviews",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"5",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get reviews no auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Error message is 'Missing Authorization Header'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg).to.eql(\"Missing Authorization Header\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/services/6/reviews",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"services",
+						"6",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

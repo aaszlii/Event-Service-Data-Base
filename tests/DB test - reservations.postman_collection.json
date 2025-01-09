@@ -1,0 +1,1211 @@
+{
+	"info": {
+		"_postman_id": "a945e4f7-4f6b-4563-b751-f6ebcb0c16e8",
+		"name": "DB test - reservations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40619838"
+	},
+	"item": [
+		{
+			"name": "Make reservations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Reservation successful!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAyODk0NCwianRpIjoiYjQwMjJmZjQtMzhhNy00ODZjLWJiZTQtMzFmMGNlZWY4MDg4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImNsaWVudCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjAyODk0NCwiY3NyZiI6IjUzZDE5OGY2LWI4YjQtNDVhOC05NzcyLWUzNzI0N2I3YTJkNiIsImV4cCI6MTczNjAyOTg0NH0.kuaSB08wmvTR1FCvPlZ3tKSZSUDomLVBlTOeqcRlEHs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"service_id\": 3,\r\n    \"provider_id\": 7,\r\n    \"reservation_date\": \"2025-01-13\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make reservations Unauthorized Access",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains error message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg).to.eql(\"Missing Authorization Header\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"service_id\": 3,\r\n    \"provider_id\": 7,\r\n    \"reservation_date\": \"2025-01-13\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make reservations No availability",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"No availability\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTk0ODQ2NSwianRpIjoiZTY5ODBlNTEtNjVhYy00NDliLWE3NWQtNGMyMjgyODg3MWY5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImNsaWVudCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTk0ODQ2NSwiY3NyZiI6IjdkNDczOTVjLTMxY2MtNGVkZS1hMjg4LTA5MGJkMDU2NGIxOSIsImV4cCI6MTczNTk0OTM2NX0.ApTto3cwhuis9zwWe67JeVCnTopMVHzS-_2U59wCWns",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"service_id\": 3,\r\n    \"provider_id\": 7,\r\n    \"reservation_date\": \"2025-01-13\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make reservations Forbidden",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Access forbidden\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTk0OTU3MywianRpIjoiMDQyZWQ1OTctZmY2Ny00YTFlLWJkZGQtMjZjZTFiY2JmZmNhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MjAsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E3QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTk0OTU3MywiY3NyZiI6IjNmYTk5NTQ1LTg3ZGItNDhhOS1hN2JlLWFiNmM0MzM1MmUxZCIsImV4cCI6MTczNTk1MDQ3M30.KTeo6dewOmXi-5SBA6TQcXDIWUawr6HmASjH6FKlHPo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"service_id\": 3,\r\n    \"provider_id\": 7,\r\n    \"reservation_date\": \"2025-01-13\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete reservations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Reservation cancelled successfully!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTk0OTc3OSwianRpIjoiNDA0ZWQ5MjAtZjFiNy00NDhiLWIyZWYtYzE2YjE2ODQ2Njk0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImNsaWVudCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTk0OTc3OSwiY3NyZiI6ImY3M2I0NDIzLWI1MmMtNGVmNC1hZWUyLTBlZmMxNjJlMWE5YSIsImV4cCI6MTczNTk1MDY3OX0.GiCduKchLiMbciAJ92VZ6SEIJVLwuD_pz-kPmAmhnjE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete reservations not exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Reservation not found\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTk0OTc3OSwianRpIjoiNDA0ZWQ5MjAtZjFiNy00NDhiLWIyZWYtYzE2YjE2ODQ2Njk0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImNsaWVudCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNTk0OTc3OSwiY3NyZiI6ImY3M2I0NDIzLWI1MmMtNGVmNC1hZWUyLTBlZmMxNjJlMWE5YSIsImV4cCI6MTczNTk1MDY3OX0.GiCduKchLiMbciAJ92VZ6SEIJVLwuD_pz-kPmAmhnjE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/999",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete wrong client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains forbidden message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Access forbidden\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAyODk3NiwianRpIjoiOTllZmI0MjEtMWUyMS00ZTU5LWEyM2ItZTBmZGZkNjZkODMyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6NCwicm9sZSI6ImNsaWVudCIsImVtYWlsIjoiY2xpZW50MkBleGFtcGxlLmNvbSJ9LCJuYmYiOjE3MzYwMjg5NzYsImNzcmYiOiIyNzUwOTViYi0yM2Y3LTRjOTQtOWZlNy0xOThmODRkYzI1MjEiLCJleHAiOjE3MzYwMjk4NzZ9.6f3MIAl8ZqrCgcV_Do8JBYy1JfxXFx37TgGi-zZG3SM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Missing Authorization Header",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains missing authorization header message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg || jsonData.message).to.eql(\"Missing Authorization Header\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get history",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Each reservation has required fields\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    jsonData.forEach(function(reservation) {\r",
+							"        pm.expect(reservation).to.have.property(\"reservation_id\");\r",
+							"        pm.expect(reservation).to.have.property(\"provider_id\");\r",
+							"        pm.expect(reservation).to.have.property(\"service_id\");\r",
+							"        pm.expect(reservation).to.have.property(\"reservation_date\");\r",
+							"        pm.expect(reservation).to.have.property(\"status\");\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAyOTIwNiwianRpIjoiYmI4ZThkZjMtYWFiNC00M2IzLThmZWYtNGUwZWM3ZmZmNDM5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImNsaWVudCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjAyOTIwNiwiY3NyZiI6ImRiZDAwNDY0LTMzNGEtNDRjNi05ZmQxLTI3YWE4ODFiNmQzYSIsImV4cCI6MTczNjAzMDEwNn0.Q2MsPEaR3DBvYFujWahkMFE_kGhn6HzsBEJJdMFpkcY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/history",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get history Missing Authorization Header",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains missing authorization message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg || jsonData.message).to.eql(\"Missing Authorization Header\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/history",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Reservation status updated successfully!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAyOTcyNiwianRpIjoiNjlmODg3ZDItZDhhNi00NDAwLWIxMTEtM2UyY2ZhMWFhOGY3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MjAsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E3QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjAyOTcyNiwiY3NyZiI6IjE5MTE0NzFiLThmYTgtNDFhYy1hNjNlLTBjZTQ3OGZiMWNjMSIsImV4cCI6MTczNjAzMDYyNn0.5FiS7Sx8ZoUkTXfiDfEloo8KMcS6QrIPY6atAiktUcg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": \"confirmed\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/1/status",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"1",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update status Invalid status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains error message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Invalid status\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAyOTcyNiwianRpIjoiNjlmODg3ZDItZDhhNi00NDAwLWIxMTEtM2UyY2ZhMWFhOGY3IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MjAsInJvbGUiOiJwcm92aWRlciIsImVtYWlsIjoidXNsdWdvZGF3Y2E3QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjAyOTcyNiwiY3NyZiI6IjE5MTE0NzFiLThmYTgtNDFhYy1hNjNlLTBjZTQ3OGZiMWNjMSIsImV4cCI6MTczNjAzMDYyNn0.5FiS7Sx8ZoUkTXfiDfEloo8KMcS6QrIPY6atAiktUcg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": \"invalid_status\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/1/status",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"1",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update status Non-provider User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains forbidden message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Access forbidden\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAyOTg4OSwianRpIjoiMDc1ZWVmNGYtNGE0OC00YTQwLThiOGMtYTczOTdmNTA5YjI0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImNsaWVudCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjAyOTg4OSwiY3NyZiI6IjRkNTA0OGE1LWIzNzUtNGUxNS1iNTA3LWUwY2YyM2E3MjViMyIsImV4cCI6MTczNjAzMDc4OX0.FUF6T78j2qpCKaRhDuw8h9I9GiZP00tHom82yzy-wXY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": \"confirmed\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/1/status",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"1",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains reservation details\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"reservation_id\");\r",
+							"    pm.expect(jsonData).to.have.property(\"provider_id\");\r",
+							"    pm.expect(jsonData).to.have.property(\"service_id\");\r",
+							"    pm.expect(jsonData).to.have.property(\"reservation_date\");\r",
+							"    pm.expect(jsonData).to.have.property(\"status\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has valid status\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.be.oneOf([\"pending\", \"confirmed\", \"completed\", \"cancelled\"]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAzMDg5MywianRpIjoiYTA0MTM2ZTUtYjZmMS00ZDkxLTg4ZWItNWJjODI3ODkyNDUwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImNsaWVudCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjAzMDg5MywiY3NyZiI6Ijk2NjdlZjZkLWU5MDEtNDYzNS04NWVjLThhNzIyZjNhMjExYiIsImV4cCI6MTczNjAzMTc5M30.LsMR-ptMnHxj0mOJ96PbczevU5i-M1x0qV_bkKiULnk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get status (Reservation not found)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains error message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Reservation not found\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAzMDg5MywianRpIjoiYTA0MTM2ZTUtYjZmMS00ZDkxLTg4ZWItNWJjODI3ODkyNDUwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwicm9sZSI6ImNsaWVudCIsImVtYWlsIjoiY2xpZW50QGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjAzMDg5MywiY3NyZiI6Ijk2NjdlZjZkLWU5MDEtNDYzNS04NWVjLThhNzIyZjNhMjExYiIsImV4cCI6MTczNjAzMTc5M30.LsMR-ptMnHxj0mOJ96PbczevU5i-M1x0qV_bkKiULnk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/999",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"999"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get status (Missing Authorization Headers)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains error message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg || jsonData.message).to.eql(\"Missing Authorization Header\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add review",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Review added successfully!\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjExNzk1NywianRpIjoiZjM5MDk2YTUtNDFkMy00YmFiLTg4MWYtOWVjNGM2M2U0OTc0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTIsInJvbGUiOiJjbGllbnQiLCJlbWFpbCI6ImNsaWVudDEyQGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjExNzk1NywiY3NyZiI6IjRkNmM0YjJhLTJkOTAtNDBiMC05MWE3LTFiMGZlMDE2Y2FjMyIsImV4cCI6MTczNjExODg1N30.Z5Ur9tfOVNJ4uWcuYWEqK8y7q3nHK1-GYb6ZAivRA_I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rating\": 5,\r\n    \"comment\": \"Amazing service!\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/8/review",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"8",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add review no rating",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Rating is required\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjExODk5NSwianRpIjoiYTViYmJjOGMtZDgwYS00YjVlLTgzZWQtNGU4ZjAzMmMxY2Y2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTIsInJvbGUiOiJjbGllbnQiLCJlbWFpbCI6ImNsaWVudDEyQGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjExODk5NSwiY3NyZiI6ImFhZDYwOTA3LTAxNDMtNGEwMi1hZTllLTdlN2ZkZDE4MWVjNSIsImV4cCI6MTczNjExOTg5NX0.SIVcasq2FwqMZBp4lrtCTa7Y4ulLSE5eNSWVWxVEd1s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"comment\": \"Amazing service!\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/8/review",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"8",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add review not completed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Reservation not found or not completed\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjExNzk1NywianRpIjoiZjM5MDk2YTUtNDFkMy00YmFiLTg4MWYtOWVjNGM2M2U0OTc0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTIsInJvbGUiOiJjbGllbnQiLCJlbWFpbCI6ImNsaWVudDEyQGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjExNzk1NywiY3NyZiI6IjRkNmM0YjJhLTJkOTAtNDBiMC05MWE3LTFiMGZlMDE2Y2FjMyIsImV4cCI6MTczNjExODg1N30.Z5Ur9tfOVNJ4uWcuYWEqK8y7q3nHK1-GYb6ZAivRA_I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rating\": 5,\r\n    \"comment\": \"Amazing service!\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/11/review",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"11",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add review twice",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains success message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"You have already reviewed this reservation\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjExNzk1NywianRpIjoiZjM5MDk2YTUtNDFkMy00YmFiLTg4MWYtOWVjNGM2M2U0OTc0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MTIsInJvbGUiOiJjbGllbnQiLCJlbWFpbCI6ImNsaWVudDEyQGV4YW1wbGUuY29tIn0sIm5iZiI6MTczNjExNzk1NywiY3NyZiI6IjRkNmM0YjJhLTJkOTAtNDBiMC05MWE3LTFiMGZlMDE2Y2FjMyIsImV4cCI6MTczNjExODg1N30.Z5Ur9tfOVNJ4uWcuYWEqK8y7q3nHK1-GYb6ZAivRA_I",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rating\": 5,\r\n    \"comment\": \"Amazing service!\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/8/review",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"8",
+						"review"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add review no auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response contains missing authorization message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.msg || jsonData.message).to.eql(\"Missing Authorization Header\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rating\": 5,\r\n    \"comment\": \"Amazing service!\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/reservations/8/review",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"reservations",
+						"8",
+						"review"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
