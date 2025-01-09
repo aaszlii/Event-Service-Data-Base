@@ -9,6 +9,17 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(50), nullable=False)
 
+class Administrator(db.Model):
+    __tablename__ = 'administrators'
+
+    admin_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete="CASCADE"), nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    permissions = db.Column(db.Enum('full', 'restricted', 'read-only'), default='restricted', nullable=False)
+
+    user = db.relationship('User', backref='administrator', lazy=True)
+
 class Provider(db.Model):
     __tablename__ = 'providers'
 
@@ -17,8 +28,13 @@ class Provider(db.Model):
     company_name = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(255), nullable=False)
 
+    # Relacja z tabelą `users`
     user = db.relationship('User', backref='provider', lazy=True)
+
+    # Relacja z tabelą `services`
     services = db.relationship('Service', backref='provider', lazy=True)
+
+    # Relacja z tabelą `specializations`
     specializations = db.relationship(
         'Specialization',
         secondary='provider_specializations',
@@ -41,14 +57,6 @@ class Specialization(db.Model):
         secondary='provider_specializations',
         back_populates='specializations'
     )
-
-class Administrator(db.Model):
-    __tablename__ = 'administrators'
-    admin_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete="CASCADE"), nullable=False)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-    permissions = db.Column(ENUM('full', 'restricted', 'read-only'), default='restricted', nullable=False)
 
 class Service(db.Model):
     __tablename__ = 'services'
@@ -78,10 +86,11 @@ class Review(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey('services.service_id'), nullable=False)
     client_id = db.Column(db.Integer, db.ForeignKey('clients.client_id'), nullable=False)
     rating = db.Column(db.Float, nullable=False)
-    comment = db.Column(db.Text, nullable=True)
+    comment = db.Column(db.Text, nullable=True)  # Komentarz jest opcjonalny
     created_at = db.Column(db.DateTime, server_default=db.func.current_timestamp(), nullable=False)
     reservation_id = db.Column(db.Integer, db.ForeignKey('reservations.reservation_id'), nullable=False)
 
+    # Relacje dla ORM
     service = db.relationship('Service', backref='reviews', lazy=True)
     client = db.relationship('Client', backref='reviews', lazy=True)
     reservation = db.relationship('Reservation', backref='reviews', lazy=True)
@@ -90,7 +99,7 @@ class Review(db.Model):
         return f"<Review(review_id={self.review_id}, service_id={self.service_id}, client_id={self.client_id}, rating={self.rating}, comment={self.comment})>"
 
 class Availability(db.Model):
-    __tablename__ = 'available_dates'
+    __tablename__ = 'available_dates'  # Poprawna nazwa tabeli
     availability_id = db.Column(db.Integer, primary_key=True)
     service_id = db.Column(db.Integer, nullable=False)
     provider_id = db.Column(db.Integer, nullable=False)
