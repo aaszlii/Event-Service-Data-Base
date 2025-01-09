@@ -8,42 +8,62 @@ account_blueprint = Blueprint('account', __name__)
 @account_blueprint.route('/register', methods=['POST'])
 def register():
     """
-    Register a new user and, if role is provider, add them as a provider.
+    Register a new user and validate fields before adding the user to the database.
     """
     try:
         data = request.json
         email = data.get('email')
         password = data.get('password')
         role = data.get('role')
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
         company_name = data.get('company_name')
         location = data.get('location')
 
-        # Data validation
+        # General validation
         if not email or not password or not role:
-            return jsonify({"message": "Missing required fields"}), 400
+            return jsonify({"message": "Missing required fields: email, password, or role"}), 400
 
-        # Password encryption
+        # Check if the email already exists
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            return jsonify({"message": "Email already exists"}), 400
+
+        # Role-specific validation before creating user
+        if role == 'provider':
+            if not company_name or not location:
+                return jsonify({"message": "Missing provider-specific fields: company_name or location"}), 400
+        elif role == 'client':
+            if not first_name or not last_name:
+                return jsonify({"message": "Missing client-specific fields: first_name or last_name"}), 400
+        else:
+            return jsonify({"message": "Invalid role"}), 400
+
+        # Encrypt the password
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-        # Create user
+        # Create the user
         new_user = User(email=email, password=hashed_password, role=role)
         db.session.add(new_user)
         db.session.commit()
 
-        # Get the user_id of the new user
         user_id = new_user.user_id
 
-        # If the user is a provider, add them to the providers table
+        # Add role-specific data
         if role == 'provider':
-            if not company_name or not location:
-                return jsonify({"message": "Missing provider-specific fields"}), 400
-
             new_provider = Provider(
                 user_id=user_id,
                 company_name=company_name,
                 location=','.join(location)
             )
             db.session.add(new_provider)
+        elif role == 'client':
+            new_client = Client(
+                user_id=user_id,
+                first_name=first_name,
+                last_name=last_name
+            )
+            db.session.add(new_client)
 
         db.session.commit()
         return jsonify({"message": "User registered successfully!"}), 201
@@ -51,6 +71,11 @@ def register():
     except Exception as e:
         print(f"Error during registration: {e}")
         db.session.rollback()
+
+        # Handle specific SQLAlchemy integrity errors
+        if "IntegrityError" in str(type(e)):
+            return jsonify({"message": "A database integrity error occurred. Check for duplicate entries or missing data."}), 400
+
         return jsonify({"message": f"Error: {str(e)}"}), 500
 
 @account_blueprint.route('/login', methods=['POST'])
@@ -66,12 +91,12 @@ def login():
         if not email or not password:
             return jsonify({"message": "Missing required fields"}), 400
 
-        # Retrieve the user from the database
+        # Pobierz użytkownika z bazy danych
         user = User.query.filter_by(email=email).first()
         if not user or not bcrypt.check_password_hash(user.password, password):
             return jsonify({"message": "Invalid credentials"}), 401
 
-        # Generate a JWT token
+        # Generowanie tokenu JWT
         access_token = create_access_token(identity={
             "id": user.user_id,
             "role": user.role,
@@ -83,7 +108,6 @@ def login():
     except Exception as e:
         print(f"Error during login: {e}")
         return jsonify({"message": "Internal server error"}), 500
-
 
 @account_blueprint.route('/delete', methods=['DELETE'])
 @jwt_required()
